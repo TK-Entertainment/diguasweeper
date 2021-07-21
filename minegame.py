@@ -4,7 +4,7 @@ import winsound
 
 # ===============
 # If you want to try chino mode, you can change this value to True to activate that function
-dev_mode = True
+dev_mode = False
 # ===============
 
 window = tkinter.Tk()
