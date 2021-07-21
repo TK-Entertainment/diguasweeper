@@ -4,7 +4,7 @@ import winsound
 
 # ===============
 # If you want to try chino mode, you can change this value to True to activate that function
-dev_mode = False
+dev_mode = True
 # ===============
 
 window = tkinter.Tk()
@@ -30,13 +30,13 @@ def start():
     global modegetter
     global v_hide
     global customframe
-    global custom_option
+    global custom_settings
     global icon_list
     startframe = tkinter.LabelFrame(window, text="請選擇您想要的遊戲模式，及設定其基本參數")
     startframe.pack()
     hideframe = [tkinter.LabelFrame(startframe, text="以下為自定義的範圍"), False]
     customframe = [tkinter.LabelFrame(hideframe[0], text="以下為真正自定義的範圍"), False]
-    custom_option = {
+    custom_settings = {
         'ratio' : tkinter.Entry(customframe[0], show=None),
         'height' : tkinter.Entry(customframe[0], show=None),
         'width' : tkinter.Entry(customframe[0], show=None),
@@ -44,13 +44,13 @@ def start():
 
     if dev_mode:
         options = {
-            'default' : [{'name' : "一顆地瓜(簡單)", 'ratio' : 0.1, 'size' : [8, 8]}, {'name' : "三顆地瓜(中)", 'ratio' : 0.15, 'size' : [10, 10]}, {'name' : "五顆地瓜(困難)", 'ratio' : 0.2, 'size' : [15, 15]}, {'name' : "自定義地瓜"}], 
-            'custom' : [{'name' : '終極地瓜', 'ratio' : 0.3, 'size' : [20, 20]}, {'name' : 'chino (開發模式)', 'ratio' : 0.5, 'size' : [20, 20]}, {'name' : "真正的自定義"}]
+            'default' : [{'name' : "一顆地瓜(簡單)", 'ratio' : 0.1, 'size' : [8, 8], 'shape' : 'rectangle'}, {'name' : "三顆地瓜(中)", 'ratio' : 0.15, 'size' : [10, 10], 'shape' : 'rectangle'}, {'name' : "五顆地瓜(困難)", 'ratio' : 0.2, 'size' : [15, 15], 'shape' : 'rectangle'}, {'name' : "自定義地瓜"}], 
+            'custom' : [{'name' : '終極地瓜', 'ratio' : 0.3, 'size' : [20, 20], 'shape' : 'rectangle'},  {'name' : '三角形', 'ratio' : 0.2, 'size' : [16], 'shape' : 'triangle'}, {'name' : 'chino (開發模式)', 'ratio' : 0.5, 'size' : [20, 20], 'shape' : 'rectangle'}, {'name' : "真正的自定義"}]
         }
     else:
         options = {
-        'default' : [{'name' : "一顆地瓜(簡單)", 'ratio' : 0.1, 'size' : [8, 8]}, {'name' : "三顆地瓜(中)", 'ratio' : 0.15, 'size' : [10, 10]}, {'name' : "五顆地瓜(困難)", 'ratio' : 0.2, 'size' : [15, 15]}, {'name' : "自定義地瓜"}], 
-        'custom' : [{'name' : '終極地瓜', 'ratio' : 0.3, 'size' : [20, 20]}, {'name' : "真正的自定義"}]
+            'default' : [{'name' : "一顆地瓜(簡單)", 'ratio' : 0.1, 'size' : [8, 8], 'shape' : 'rectangle'}, {'name' : "三顆地瓜(中)", 'ratio' : 0.15, 'size' : [10, 10], 'shape' : 'rectangle'}, {'name' : "五顆地瓜(困難)", 'ratio' : 0.2, 'size' : [15, 15], 'shape' : 'rectangle'}, {'name' : "自定義地瓜"}], 
+            'custom' : [{'name' : '終極地瓜', 'ratio' : 0.3, 'size' : [20, 20], 'shape' : 'rectangle'}, {'name' : '三角形', 'ratio' : 0.2, 'size' : [16], 'shape' : 'triangle'}, {'name' : "真正的自定義"}]
         }
 
     v = tkinter.IntVar()
@@ -97,11 +97,11 @@ def start():
                 customframe[1] = True
 
                 tkinter.Label(customframe[0], text="比值：").grid(row=0)
-                custom_option['ratio'].grid(row=0, column=1)
+                custom_settings['ratio'].grid(row=0, column=1)
                 tkinter.Label(customframe[0], text="場地大小：").grid(row=1)
-                custom_option['height'].grid(row=1, column=1)
+                custom_settings['height'].grid(row=1, column=1)
                 tkinter.Label(customframe[0], text="場地大小：").grid(row=2)
-                custom_option['width'].grid(row=2, column=1)
+                custom_settings['width'].grid(row=2, column=1)
                 customframe[0].pack()
         else:
             customframe[1] = False
@@ -112,11 +112,11 @@ def start():
         tkinter.Radiobutton(startframe, text=options['default'][i]['name'], variable=v, value=i, command=mode).pack(anchor='n')
 
     def setup():
-        global custom_option
+        global custom_settings
         global mainframe
-        options['custom'][-1]['ratio'] = float(custom_option['ratio'].get() or '1')
-        options['custom'][-1]['size'] = [int(custom_option['height'].get() or '10'), int(custom_option['width'].get() or '10')]
-        if dev_mode == True and modegetter[0] == 'custom' and modegetter[1] == 1:
+        options['custom'][-1]['ratio'] = float(custom_settings['ratio'].get() or '1')
+        options['custom'][-1]['size'] = [int(custom_settings['height'].get() or '10'), int(custom_settings['width'].get() or '10')]
+        if dev_mode == True and modegetter[0] == 'custom' and modegetter[1] == 2:
             window.title("請問您今天要來點chino嗎？")
         elif modegetter[0] == 'custom' and modegetter[1] == 0:
             window.title("踩地瓜 (終極地瓜模式)")
@@ -150,9 +150,9 @@ def about():
     aboutmain = tkinter.LabelFrame(aboutwindow, text='關於 踩地瓜 Diguasweeper')
     aboutmain.pack()
     if dev_mode:
-        tkinter.Label(aboutmain, text='版本 v0.1 alpha\n========\n已載入 chino.mod 模組\n========\n目前開發模式已開啟\n此版本為初期版本，有諸多ㄉbug還沒修，請小心取用owo\n註:如果你心臟夠大顆，可以試試chino版本\n========\n本程式及部分圖檔(不含chino)皆由 TK Entertainment 製作\nChino 圖片由 NBC環球娛樂 及 Koi 版權所有\nNo Poi! 音樂由 NBC唱片公司 版權所有\n========\nDiguasweeper | Copyright 2021 TK Entertainment / All right reserved').pack()
+        tkinter.Label(aboutmain, text='版本 v0.2-20210721 alpha\n========\n已載入 chino.mod 模組\n========\n目前開發模式已開啟\n此版本為初期版本，有諸多ㄉbug還沒修，請小心取用owo\n註:如果你心臟夠大顆，可以試試chino版本\n========\n本程式及部分圖檔(不含chino)皆由 TK Entertainment 製作\nChino 圖片由 NBC環球娛樂 及 Koi 版權所有\nNo Poi! 音樂由 NBC唱片公司 版權所有\n========\nDiguasweeper | Copyright 2021 TK Entertainment / All right reserved').pack()
     else:
-        tkinter.Label(aboutmain, text='版本 v0.1 alpha\n此版本為初期版本，有諸多ㄉbug還沒修，請小心取用owo\n註:如果你心臟夠大顆，可以試試終極地瓜版本\n========\n本程式及圖檔皆由 TK Entertainment 製作\n========\nDiguasweeper | Copyright 2021 TK Entertainment / All right reserved').pack()
+        tkinter.Label(aboutmain, text='版本 v0.2-20210721 alpha\n此版本為初期版本，有諸多ㄉbug還沒修，請小心取用owo\n註:如果你心臟夠大顆，可以試試終極地瓜版本\n========\n本程式及圖檔皆由 TK Entertainment 製作\n========\nDiguasweeper | Copyright 2021 TK Entertainment / All right reserved').pack()
     aboutwindow.mainloop()
 start()
 
@@ -170,11 +170,11 @@ def main():
     mineframe = tkinter.Frame(mainframe)
     mineframe.pack(side='top')
 
-    minemap = Mine(options[ modegetter[0] ][ modegetter[1] ]['size'], options[ modegetter[0] ][ modegetter[1] ]['ratio'] )
+    minemap = Mine(**options[ modegetter[0] ][ modegetter[1] ])
     minemap.setground()
     minemap.numsetting()
     
-    showvar = [[tkinter.StringVar(value='-1') for j in range(options[ modegetter[0] ][ modegetter[1] ]['size'][1])] for i in range(options[ modegetter[0] ][ modegetter[1] ]['size'][0])]
+    showvar = [[tkinter.StringVar(value='-1') for j in range(options[ modegetter[0] ][ modegetter[1] ]['size'][1] if options[ modegetter[0] ][ modegetter[1] ]['shape'] == 'rectangle' else i+1)] for i in range(options[ modegetter[0] ][ modegetter[1] ]['size'][0])]
 
     def mine_hitleft(i, j):
         global play
@@ -182,7 +182,7 @@ def main():
             showvar[item[0]][item[1]].set(minemap.showground[item[0]][item[1]])
             minebutton_list[item[0]][item[1]]['button']['command'] = 0; minebutton_list[item[0]][item[1]]['button']['relief'] = 'sunken'
             if minemap.showground[item[0]][item[1]] == 9:
-                if dev_mode == True and modegetter[0] == 'custom' and modegetter[1] == 1:
+                if dev_mode == True and modegetter[0] == 'custom' and modegetter[1] == 2:
                     minebutton_list[item[0]][item[1]]['button']['image'] = icon_list[-6]
                     minebutton_list[i][j]['button']['image'] = icon_list[-4]
                 else:
@@ -196,10 +196,10 @@ def main():
                 pass
         if minemap.win == 'lose':
             print('owo')
-            if dev_mode == True and modegetter[0] == 'custom' and modegetter[1] == 1:
+            if dev_mode == True and modegetter[0] == 'custom' and modegetter[1] == 2:
                 winsound.PlaySound(r"music\no poi.wav", winsound.SND_FILENAME | winsound.SND_ASYNC)
             for i in range(options[ modegetter[0] ][ modegetter[1] ]['size'][0]):
-                for j in range(options[ modegetter[0] ][ modegetter[1] ]['size'][1]):
+                for j in range(options[ modegetter[0] ][ modegetter[1] ]['size'][1] if options[ modegetter[0] ][ modegetter[1] ]['shape'] == 'rectangle' else i+1):
                     minebutton_list[i][j]['button']['command'] = 0; minebutton_list[i][j]['button']['relief'] = 'sunken'
         elif minemap.win == 'win':
             print('oeo')
@@ -215,11 +215,13 @@ def main():
     minebutton_list = []
     for i in range(options[ modegetter[0] ][ modegetter[1] ]['size'][0]):
         minebutton_list.append([])
-        for j in range(options[ modegetter[0] ][ modegetter[1] ]['size'][1]):
-            button = tkinter.Button(mineframe, textvariable=showvar[i][j], image=icon_list[-1], command=lambda i=i, j=j : mine_hitleft(i, j), relief='groove')
+        buttonframe = tkinter.Frame(mineframe)
+        for j in range(options[ modegetter[0] ][ modegetter[1] ]['size'][1] if options[ modegetter[0] ][ modegetter[1] ]['shape'] == 'rectangle' else i+1):
+            button = tkinter.Button(buttonframe, textvariable=showvar[i][j], image=icon_list[-1], command=lambda i=i, j=j : mine_hitleft(i, j), relief='groove')
             # button = tkinter.Button(frame_l, textvariable=var[i][j], command=lambda i=i, j=j : hit_me(i, j), image=image_list[i][j])
             button.grid(row=i, column=j, sticky="nsew", padx=1, pady=1, ipadx=0, ipady=0)
             minebutton_list[i].append({'button' : button, 'id' : button.bind('<Button-3>', func=lambda event, i=i, j=j : mine_hitright(i, j))})
+        buttonframe.pack(anchor='center')
 
 window.config(menu=menubar)
 window.mainloop()
